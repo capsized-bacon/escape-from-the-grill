@@ -7,16 +7,15 @@ public class DoStuff : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] private float jumpForce = 1f;
     
-    Rigidbody2D body;
+    private Rigidbody2D body;
 
-    public float Speed;
-    public bool MoveRight;
-    public bool Jump;
-    public bool Grounded;
+    public float speed;
+    public bool moveRight;
+    public bool isGrounded;
     
     public LayerMask enemyMask;
     Transform spriteTransform;
-    float width;
+    private float width;
 
     void Start()
     {
@@ -33,32 +32,35 @@ public class DoStuff : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 lineCastPos = spriteTransform.position - spriteTransform.right * width;
-        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down);
-        Grounded = !Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down, enemyMask);
-        Debug.Log(Grounded);
-/*        if (Grounded)
-        {
-            Jump = true;
-        }
-        else
-        {
-            Jump = false;
-        }*/
+        //IsGrounded();
 
-        if (MoveRight)
+
+        //Vector2 characterScale = transform.localScale;
+
+        if (moveRight)
         {
-            transform.Translate(2 * Time.deltaTime * Speed, 0, 0);
+            transform.Translate(1.5f * Time.deltaTime * speed, 0, 0);
+            //characterScale.x = 1;
         } else
         {
-            transform.Translate(-2 * Time.deltaTime * Speed, 0, 0);
+            transform.Translate(-1.5f * Time.deltaTime * speed, 0, 0);
+            //characterScale.x = 1;
         }
+        //transform.localScale = characterScale;
 
-        if(Grounded)
+        if (isGrounded)
         {
             //this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, jumpForce));
         }
 
+    }
+
+    private void IsGrounded()
+    {
+        //isGrounded = Physics2D.OverlapArea(groundCheck1.position, groundCheck2.position, whatIsGround);
+        Vector2 lineCastPos = spriteTransform.position - spriteTransform.right * width;
+        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down);
+        isGrounded = !Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down, enemyMask);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -67,12 +69,12 @@ public class DoStuff : MonoBehaviour
         {
            Vector3 currRot = spriteTransform.eulerAngles;
 
-            if(MoveRight)
+            if(moveRight)
             {
-                MoveRight = false;
+                moveRight = false;
             } else
             {
-                MoveRight = true;
+                moveRight = true;
             }
 
             currRot.y += 180;
