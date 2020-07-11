@@ -5,7 +5,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     public LayerMask whatIsGround;
     public Transform groundCheck1, groundCheck2;
-    
+
     private bool isGrounded;
     public float speed;
     private float moveInput;
@@ -58,7 +58,6 @@ public class Player : MonoBehaviour
         CoyoteTime();
         JumpBuffer();
 
-        //if (jumpBufferCount >= 0 && hangCounter > 0)
         if (jumpBufferCount >= 0 && hangCounter > 0 && isGrounded)
         {
             rb.velocity = Vector2.up * jumpVelocity;
@@ -81,7 +80,8 @@ public class Player : MonoBehaviour
         if (isGrounded)
         {
             hangCounter = hangTime;
-        }   else
+        }
+        else
         {
             hangCounter -= Time.deltaTime;
         }
@@ -98,11 +98,4 @@ public class Player : MonoBehaviour
             jumpBufferCount -= Time.deltaTime;
         }
     }
-
-    //private bool isGrounded()
-    //{
-    //    RaycastHit2D box = Physics2D.BoxCast(groundCheck.bounds.center, groundCheck.bounds.size, 0f, Vector2.down, platformLayer, 0, 5f);
-    //    Debug.Log(box.collider);
-    //    return box.collider != null;
-    //}
 }
