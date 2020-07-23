@@ -43,12 +43,12 @@ public class DoStuff : MonoBehaviour
         if (moveRight)
         {
             transform.Translate(1.5f * Time.deltaTime * speed, 0, 0);
-            characterScale.x = 0.5f;
+            characterScale.x = 1;
         }
         else
         {
             transform.Translate(-1.5f * Time.deltaTime * speed, 0, 0);
-            characterScale.x = -0.5f;
+            characterScale.x = -1;
         }
         transform.localScale = characterScale;
     }
