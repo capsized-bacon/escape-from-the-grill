@@ -84,6 +84,8 @@ public class Player : MonoBehaviour
         // It's a polish thing.
         JumpBuffer();
 
+        // if the jump key is pressed within x amount of time of hitting the ground, still jump, 
+        // and reset the counters used to calculate that time.
 
         if (jumpBufferCount >= 0 && hangCounter > 0 && isGrounded)
         {
