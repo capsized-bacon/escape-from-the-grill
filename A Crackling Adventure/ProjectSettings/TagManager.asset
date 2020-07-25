@@ -19,8 +19,8 @@ TagManager:
   - Boundaries
   - Enemies
   - Player
-  - 
-  - 
+  - Bedrock
+  - Obstacles
   - 
   - 
   - 
@@ -40,6 +40,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Foreground
+    uniqueID: 3769563341
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Behind
+    uniqueID: 2197903923
+    locked: 0
+  - name: Background
+    uniqueID: 1486062019
     locked: 0

@@ -8,7 +8,6 @@ public class Player : MonoBehaviour
     public LayerMask whatIsGround;
     // These points are chosen in Unity and called when checking player is grounded.
     public Transform groundCheck1, groundCheck2;
-
     
     // Health and living state check
     public int health;
@@ -50,7 +49,7 @@ public class Player : MonoBehaviour
         FlipSprite();
         Move();
         Jump();
-        IsAlive();
+        //IsAlive();
     }
 
     // This makes the sprite turn left and right when the player moves left and right. In hindsight, I should have
@@ -87,7 +86,7 @@ public class Player : MonoBehaviour
 
         // if the jump key is pressed within x amount of time of hitting the ground, still jump, 
         // and reset the counters used to calculate that time.
-       
+
         if (jumpBufferCount >= 0 && hangCounter > 0 && isGrounded)
         {
             rb.velocity = Vector2.up * jumpVelocity;
