@@ -8,9 +8,7 @@ public class Player : MonoBehaviour
     public LayerMask whatIsGround;
     // These points are chosen in Unity and called when checking player is grounded.
     public Transform groundCheck1, groundCheck2;
-<<<<<<< Updated upstream
 
-=======
     
     // Health and living state check
     public int health;
@@ -18,7 +16,6 @@ public class Player : MonoBehaviour
     private bool isAlive;
 
     // Variables related to movement
->>>>>>> Stashed changes
     private bool isGrounded;
     public float speed;
     private float moveInput;
@@ -88,12 +85,9 @@ public class Player : MonoBehaviour
         // It's a polish thing.
         JumpBuffer();
 
-<<<<<<< Updated upstream
-=======
         // if the jump key is pressed within x amount of time of hitting the ground, still jump, 
         // and reset the counters used to calculate that time.
        
->>>>>>> Stashed changes
         if (jumpBufferCount >= 0 && hangCounter > 0 && isGrounded)
         {
             rb.velocity = Vector2.up * jumpVelocity;
@@ -142,8 +136,6 @@ public class Player : MonoBehaviour
             jumpBufferCount -= Time.deltaTime;
         }
     }
-<<<<<<< Updated upstream
-=======
 
     // check if player is dead. This needs to link to game over script.
     private void IsAlive()
@@ -164,5 +156,4 @@ public class Player : MonoBehaviour
     //    Debug.Log(box.collider);
     //    return box.collider != null;
     //}
->>>>>>> Stashed changes
 }
