@@ -136,6 +136,13 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Reduces the player health variable based on value received from caller.
+    public void reduceHealth(int value)
+    {
+        health -= value;
+        Debug.Log("Ouch!! Health: " + health);
+    }
+
     // check if player is dead. This needs to link to game over script.
     private void IsAlive()
     {
