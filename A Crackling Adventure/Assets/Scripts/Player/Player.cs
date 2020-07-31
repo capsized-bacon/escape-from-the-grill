@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -138,11 +139,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Reduces the player health variable based on value received from caller.
-    public void ReduceHealth(int value)
+    // Modify the player health variable based on value received from caller.
+    public void ModifyHealth(int value)
     {
-        health -= value;
-        Debug.Log("Ouch!! Health: " + health);
+        health += value;
+        Debug.Log("Health: " + health);
+        GameObject.Find("TestText").GetComponent<Text>().text = "Health: " + health.ToString();
     }
 
     public void BounceBack(Collision2DSideType side)

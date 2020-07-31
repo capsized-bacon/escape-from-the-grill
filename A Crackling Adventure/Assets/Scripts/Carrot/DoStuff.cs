@@ -121,7 +121,7 @@ public class DoStuff : MonoBehaviour
             else if (collisionSide == Collision2DSideType.Left || collisionSide == Collision2DSideType.Right)
             {
                 Debug.Log("Player Dies");
-                FindObjectOfType<Player>().ReduceHealth(50);
+                FindObjectOfType<Player>().ModifyHealth(-50);
                 FindObjectOfType<Player>().BounceBack(collisionSide);
             }
 
