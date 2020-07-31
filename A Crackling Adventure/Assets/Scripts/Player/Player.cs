@@ -139,19 +139,31 @@ public class Player : MonoBehaviour
     }
 
     // Reduces the player health variable based on value received from caller.
-    public void reduceHealth(int value)
+    public void ReduceHealth(int value)
     {
         health -= value;
         Debug.Log("Ouch!! Health: " + health);
     }
 
-    public void bounceBack(Collision2DSideType side)
+    public void BounceBack(Collision2DSideType side)
     {
         if(side == Collision2DSideType.Top) {
-            //rb.AddForce(transform.up * 5);
             rb.velocity = Vector2.up * bounceOffVelocity;
-            Debug.Log("Bounce Up");
         }
+/*        else if(side == Collision2DSideType.Left)
+        {
+            rb.velocity = Vector2.left * bounceOffVelocity;
+            Debug.Log("Bounce Left");
+        }
+        else if (side == Collision2DSideType.Right)
+        {
+            rb.velocity = Vector2.right * bounceOffVelocity;
+            Debug.Log("Bounce Right");
+        }
+        else
+        {
+            Debug.Log("Whoa, how did it colide there?");
+        }*/
     }
 
     // check if player is dead. This needs to link to game over script.
