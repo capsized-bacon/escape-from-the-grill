@@ -94,6 +94,7 @@ public class Player : MonoBehaviour
         {
             rb.velocity = Vector2.up * jumpVelocity;
             jumpBufferCount = 0;
+            FindObjectOfType<AudioManager>().Play("Jump");
         }
 
         // If the space bar is let go early in the jump, the velocity of the jump will lessen to 
@@ -142,9 +143,14 @@ public class Player : MonoBehaviour
     // Modify the player health variable based on value received from caller.
     public void ModifyHealth(int value)
     {
+        if (value < 0)
+        {
+            FindObjectOfType<AudioManager>().Play("Hit");
+        }
         health += value;
         Debug.Log("Health: " + health);
         GameObject.Find("TestText").GetComponent<Text>().text = "Health: " + health.ToString();
+        
     }
 
     public void BounceBack(Collision2DSideType side)

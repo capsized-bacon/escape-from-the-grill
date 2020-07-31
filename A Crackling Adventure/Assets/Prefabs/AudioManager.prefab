@@ -49,3 +49,18 @@ MonoBehaviour:
     volume: 0.465
     loop: 0
     source: {fileID: 0}
+  - name: Jump
+    clip: {fileID: 8300000, guid: 9f253ce8a46d8414180f183c21e9b39c, type: 3}
+    volume: 0.465
+    loop: 0
+    source: {fileID: 0}
+  - name: Hit
+    clip: {fileID: 8300000, guid: 63377d9ee78953545a49d9bcad3afc6c, type: 3}
+    volume: 0.465
+    loop: 0
+    source: {fileID: 0}
+  - name: Ta
+    clip: {fileID: 8300000, guid: abe9919eaeed6f74cbc283053d3e8589, type: 3}
+    volume: 0.465
+    loop: 0
+    source: {fileID: 0}
