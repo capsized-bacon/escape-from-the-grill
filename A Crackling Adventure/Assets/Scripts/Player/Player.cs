@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
     private float hangCounter;
     public float jumpBufferLength;
     private float jumpBufferCount;
+    public float bounceOffVelocity;
 
     private void Start()
     {
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour
         jumpVelocity = 20f;
         hangTime = .2f;
         jumpBufferLength = .01f;
+        bounceOffVelocity = 8f;
     }
 
     private void Update()
@@ -91,6 +94,7 @@ public class Player : MonoBehaviour
         {
             rb.velocity = Vector2.up * jumpVelocity;
             jumpBufferCount = 0;
+            FindObjectOfType<AudioManager>().Play("Jump");
         }
 
         // If the space bar is let go early in the jump, the velocity of the jump will lessen to 
@@ -134,6 +138,40 @@ public class Player : MonoBehaviour
         {
             jumpBufferCount -= Time.deltaTime;
         }
+    }
+
+    // Modify the player health variable based on value received from caller.
+    public void ModifyHealth(int value)
+    {
+        if (value < 0)
+        {
+            FindObjectOfType<AudioManager>().Play("Hit");
+        }
+        health += value;
+        Debug.Log("Health: " + health);
+        GameObject.Find("TestText").GetComponent<Text>().text = "Health: " + health.ToString();
+        
+    }
+
+    public void BounceBack(Collision2DSideType side)
+    {
+        if(side == Collision2DSideType.Top) {
+            rb.velocity = Vector2.up * bounceOffVelocity;
+        }
+/*        else if(side == Collision2DSideType.Left)
+        {
+            rb.velocity = Vector2.left * bounceOffVelocity;
+            Debug.Log("Bounce Left");
+        }
+        else if (side == Collision2DSideType.Right)
+        {
+            rb.velocity = Vector2.right * bounceOffVelocity;
+            Debug.Log("Bounce Right");
+        }
+        else
+        {
+            Debug.Log("Whoa, how did it colide there?");
+        }*/
     }
 
     // check if player is dead. This needs to link to game over script.
