@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     private float hangCounter;
     public float jumpBufferLength;
     private float jumpBufferCount;
+    public float bounceOffVelocity;
 
     private void Start()
     {
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
         jumpVelocity = 20f;
         hangTime = .2f;
         jumpBufferLength = .01f;
+        bounceOffVelocity = 8f;
     }
 
     private void Update()
@@ -141,6 +143,15 @@ public class Player : MonoBehaviour
     {
         health -= value;
         Debug.Log("Ouch!! Health: " + health);
+    }
+
+    public void bounceBack(Collision2DSideType side)
+    {
+        if(side == Collision2DSideType.Top) {
+            //rb.AddForce(transform.up * 5);
+            rb.velocity = Vector2.up * bounceOffVelocity;
+            Debug.Log("Bounce Up");
+        }
     }
 
     // check if player is dead. This needs to link to game over script.
