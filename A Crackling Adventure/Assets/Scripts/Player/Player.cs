@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         // Setting jump parameters here during testing. Can take it off and alter the amount in Unity later.
-        jumpVelocity = 20f;
+        jumpVelocity = 21f;
         hangTime = .2f;
         jumpBufferLength = .01f;
         bounceOffVelocity = 8f;
