@@ -423,6 +423,100 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1001 &734717043
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6545523950849562708, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562708, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562708, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562708, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562708, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562708, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562708, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562708, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562708, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562708, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562708, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562710, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: m_Name
+      value: AudioManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562711, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: sounds.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562711, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: sounds.Array.data[1].name
+      value: ThemeMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562711, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: sounds.Array.data[1].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 9859c3d9ca1097546972971eb7319b02, type: 3}
+    - target: {fileID: 6545523950849562711, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: sounds.Array.data[1].volume
+      value: 0.465
+      objectReference: {fileID: 0}
+    - target: {fileID: 6545523950849562711, guid: 54ac1437ddb610c478d2e067bb79dcfb,
+        type: 3}
+      propertyPath: sounds.Array.data[1].loop
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 54ac1437ddb610c478d2e067bb79dcfb, type: 3}
 --- !u!1 &737465334
 GameObject:
   m_ObjectHideFlags: 0
@@ -1068,7 +1162,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1935009240}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 998c64ae486bf0549a47511189433b4b,
     type: 2}
