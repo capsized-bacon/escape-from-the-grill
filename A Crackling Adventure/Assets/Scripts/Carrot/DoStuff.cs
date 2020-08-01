@@ -117,6 +117,7 @@ public class DoStuff : MonoBehaviour
                 FindObjectOfType<Player>().BounceBack(Collision2DSideType.Top);
                 Debug.Log("Carrot Dies");
                 health -= 1;
+                FindObjectOfType<Player>().ModifyScore(100);
             }
             else if (collisionSide == Collision2DSideType.Left || collisionSide == Collision2DSideType.Right)
             {

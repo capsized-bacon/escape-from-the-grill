@@ -10,7 +10,8 @@ public class FallToDeath : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Game Over");
-            GameObject.Find("TestText").GetComponent<Text>().text = "Game Over";
+            Player.GetInstance().GameOver();
+            // GameObject.Find("TestText").GetComponent<Text>().text = "Game Over";
         }
     }
 }
