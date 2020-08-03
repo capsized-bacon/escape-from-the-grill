@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -9,11 +11,22 @@ public class Player : MonoBehaviour
     public LayerMask whatIsGround;
     // These points are chosen in Unity and called when checking player is grounded.
     public Transform groundCheck1, groundCheck2;
-    
+
     // Health and living state check
-    public int health;
+    public int currentHealth;
     private int maxHealth;
     private bool isAlive;
+
+    // Jesse: Adding Score variable.
+    public int currentScore = 0;
+
+    // Jesse: Adding Player instance.
+    static Player instance; // [1]
+
+    public static Player GetInstance()
+    {
+        return instance;
+    }
 
     // Variables related to movement
     private bool isGrounded;
@@ -28,11 +41,24 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        // Jesse: Singleton pattern. He shall never die! https://wiki.unity3d.com/index.php/Singleton
+        if (instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        instance = this;
+        GameObject.DontDestroyOnLoad(this.gameObject);
+
         // Initialising the boolean check for being alive, to be used for game over trigger.
         isAlive = true;
         // Setting default health to 100, subject to change.
         maxHealth = 100;
-        health = maxHealth;
+        currentHealth = maxHealth;
+
+        // Jesse: Set score to 0.
+        currentScore = 0;
 
         // This completes the rigidbody shortcut by assigning rb to get the rigidbody component when the game starts.
         // As the variable is private, it knows that I'm looking for the rb of the actual object (ie the player or THIS).
@@ -52,7 +78,7 @@ public class Player : MonoBehaviour
         FlipSprite();
         Move();
         Jump();
-        //IsAlive();
+        IsAlive();
     }
 
     // This makes the sprite turn left and right when the player moves left and right. In hindsight, I should have
@@ -78,7 +104,7 @@ public class Player : MonoBehaviour
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
     }
 
-  
+
     private void Jump()
     {
         // CoyoteTime = the hang time in the air to let player adjust themselves
@@ -143,54 +169,101 @@ public class Player : MonoBehaviour
     // Modify the player health variable based on value received from caller.
     public void ModifyHealth(int value)
     {
-        if (value < 0)
+        if (value < 0) // If negative value.
         {
             FindObjectOfType<AudioManager>().Play("Hit");
+            currentHealth += value;
+            Debug.Log("Health: " + currentHealth);
         }
-        health += value;
-        Debug.Log("Health: " + health);
-        GameObject.Find("TestText").GetComponent<Text>().text = "Health: " + health.ToString();
-        
+        else // If positive value.
+        {
+            currentHealth += value;
+            Debug.Log("else Health: " + currentHealth);
+            if (currentHealth >= maxHealth)
+            {
+                currentHealth = maxHealth;
+                Debug.Log("Health is at max! " + currentHealth);
+            }
+        }
+
+    }
+
+    // Jesse: Modify the player score variable based on value received from the caller.
+    public void ModifyScore(int value)
+    {
+        currentScore += value;
+        Debug.Log("Score: " + currentScore);
     }
 
     public void BounceBack(Collision2DSideType side)
     {
-        if(side == Collision2DSideType.Top) {
+        if (side == Collision2DSideType.Top)
+        {
             rb.velocity = Vector2.up * bounceOffVelocity;
         }
-/*        else if(side == Collision2DSideType.Left)
-        {
-            rb.velocity = Vector2.left * bounceOffVelocity;
-            Debug.Log("Bounce Left");
-        }
-        else if (side == Collision2DSideType.Right)
-        {
-            rb.velocity = Vector2.right * bounceOffVelocity;
-            Debug.Log("Bounce Right");
-        }
-        else
-        {
-            Debug.Log("Whoa, how did it colide there?");
-        }*/
+        /*        else if(side == Collision2DSideType.Left)
+                {
+                    rb.velocity = Vector2.left * bounceOffVelocity;
+                    Debug.Log("Bounce Left");
+                }
+                else if (side == Collision2DSideType.Right)
+                {
+                    rb.velocity = Vector2.right * bounceOffVelocity;
+                    Debug.Log("Bounce Right");
+                }
+                else
+                {
+                    Debug.Log("Whoa, how did it colide there?");
+                }*/
     }
 
     // check if player is dead. This needs to link to game over script.
     private void IsAlive()
     {
-        if (health <= 0)
+        if (currentHealth <= 0)
         {
             isAlive = false;
-        } 
-      
+            Debug.Log("Game over!");
+            GameOver();
+        }
+
     }
 
-    // This was a previous attempt at grounding using boxcast. I didn't stick with it because I couldn't get it
-    // working effectively, and my overlap method felt more robust for handling odd terrain like diagonals.
-    // 
-    //private bool isGrounded()
-    //{
-    //    RaycastHit2D box = Physics2D.BoxCast(groundCheck.bounds.center, groundCheck.bounds.size, 0f, Vector2.down, platformLayer, 0, 5f);
-    //    Debug.Log(box.collider);
-    //    return box.collider != null;
-    //}
+    // Getters (Java style still works, however C# has additional usage when using it's own format).
+
+    public int GetScore()
+    {
+        return currentScore;
+    }
+
+    public int GetHealth()
+    {
+        return currentHealth;
+    }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public void GameOver()
+    {
+        FindObjectOfType<GameManager>().GameOver();
+    }
 }
+
+// This was a previous attempt at grounding using boxcast. I didn't stick with it because I couldn't get it
+// working effectively, and my overlap method felt more robust for handling odd terrain like diagonals.
+// 
+//private bool isGrounded()
+//{
+//    RaycastHit2D box = Physics2D.BoxCast(groundCheck.bounds.center, groundCheck.bounds.size, 0f, Vector2.down, platformLayer, 0, 5f);
+//    Debug.Log(box.collider);
+//    return box.collider != null;
+//}
+
+// REFERENCES
+
+/*[1] “Unity Tutorial: Preserving Data between Scene Loading/Switching...”. [Online].
+Available: https://www.youtube.com/watch?v=WchH-JCwVI8.
+[Accessed: 30-Jun.-2020].*/

@@ -24,7 +24,7 @@ public class ScoreReference : MonoBehaviour
     {
         // Accesses text box for Text Mesh Pro.
         textPro = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
-        textPro.SetText("{0}", TestPlayer.GetInstance().GetScore());
+        textPro.SetText("{0}", Player.GetInstance().GetScore());
         // UnityEngine.Debug.Log("The currentScore is:" + TestPlayer.GetInstance().GetScore());
     }
 }

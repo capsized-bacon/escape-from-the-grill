@@ -22,15 +22,15 @@ public class HealthBar : MonoBehaviour
         slider.value = health;
     }
 
-    void Start()
+    /*void Start() // This has been commented out because the maxHealth is set in Player.cs.
     {
-        healthBar.SetMaxHealth(TestPlayer.GetInstance().GetMaxHealth());
-    }
+        // healthBar.SetMaxHealth(Player.GetInstance().GetMaxHealth());
+    }*/
 
     // Update is called once per frame
     void Update()
     {
-        healthBar.SetHealth(TestPlayer.GetInstance().GetHealth());
+        healthBar.SetHealth(Player.GetInstance().GetHealth());
     }
 }
 
