@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Security.Cryptography;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class Player : MonoBehaviour
     public LayerMask whatIsGround;
     // These points are chosen in Unity and called when checking player is grounded.
     public Transform groundCheck1, groundCheck2;
+    // Variable for animation here:
+    public Animator anim;
     
     // Health and living state check
     public int health;
@@ -49,6 +52,7 @@ public class Player : MonoBehaviour
         FlipSprite();
         Move();
         Jump();
+        Animate();
         //IsAlive();
     }
 
@@ -59,11 +63,11 @@ public class Player : MonoBehaviour
         Vector2 characterScale = transform.localScale;
         if (Input.GetAxis("Horizontal") < 0)
         {
-            characterScale.x = 1;
+            characterScale.x = -1;
         }
         if (Input.GetAxis("Horizontal") > 0)
         {
-            characterScale.x = -1;
+            characterScale.x = 1;
         }
         transform.localScale = characterScale;
     }
@@ -144,6 +148,25 @@ public class Player : MonoBehaviour
             isAlive = false;
         } 
       
+    }
+
+    private void Animate()
+    {
+   
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
+        {
+            anim.SetTrigger("Run");
+        } 
+
+        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+        {
+            anim.SetTrigger("Idle");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            anim.SetTrigger("Jump");
+        }
     }
 
     // This was a previous attempt at grounding using boxcast. I didn't stick with it because I couldn't get it
