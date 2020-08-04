@@ -11,18 +11,20 @@ public class Player : MonoBehaviour
     public LayerMask whatIsGround;
     // These points are chosen in Unity and called when checking player is grounded.
     public Transform groundCheck1, groundCheck2;
-
+    // Variable for animation here:
+    public Animator animator;
+    
     // Health and living state check
-    public int currentHealth;
     private int maxHealth;
+    public int currentHealth;
     private bool isAlive;
 
     // Jesse: Adding Score variable.
     public int currentScore = 0;
 
     // Jesse: Adding Player instance.
-    static Player instance; // [1]
-
+    static Player instance; // [1]
+
     public static Player GetInstance()
     {
         return instance;
@@ -52,7 +54,7 @@ public class Player : MonoBehaviour
         GameObject.DontDestroyOnLoad(this.gameObject);
 
         // Initialising the boolean check for being alive, to be used for game over trigger.
-        isAlive = true;
+        // isAlive = true;
         // Setting default health to 100, subject to change.
         maxHealth = 100;
         currentHealth = maxHealth;
@@ -68,6 +70,9 @@ public class Player : MonoBehaviour
         jumpVelocity = 21f;
         hangTime = .2f;
         jumpBufferLength = .01f;
+
+        animator = GetComponent<Animator>();
+   
         bounceOffVelocity = 8f;
     }
 
@@ -78,6 +83,8 @@ public class Player : MonoBehaviour
         FlipSprite();
         Move();
         Jump();
+
+        animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
         IsAlive();
     }
 
@@ -88,11 +95,11 @@ public class Player : MonoBehaviour
         Vector2 characterScale = transform.localScale;
         if (Input.GetAxis("Horizontal") < 0)
         {
-            characterScale.x = 1;
+            characterScale.x = -1;
         }
         if (Input.GetAxis("Horizontal") > 0)
         {
-            characterScale.x = -1;
+            characterScale.x = 1;
         }
         transform.localScale = characterScale;
     }
@@ -102,9 +109,9 @@ public class Player : MonoBehaviour
     {
         moveInput = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
-    }
-
-
+    }
+
+
     private void Jump()
     {
         // CoyoteTime = the hang time in the air to let player adjust themselves
@@ -118,6 +125,7 @@ public class Player : MonoBehaviour
 
         if (jumpBufferCount >= 0 && hangCounter > 0 && isGrounded)
         {
+            animator.SetBool("IsJumping", true);
             rb.velocity = Vector2.up * jumpVelocity;
             jumpBufferCount = 0;
             FindObjectOfType<AudioManager>().Play("Jump");
@@ -127,6 +135,7 @@ public class Player : MonoBehaviour
         // allow more control on jump height.
         if (Input.GetKeyUp(KeyCode.Space) && rb.velocity.y > 0)
         {
+            animator.SetBool("IsJumping", true);
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * .5f);
         }
     }
@@ -136,6 +145,11 @@ public class Player : MonoBehaviour
     private void IsGrounded()
     {
         isGrounded = Physics2D.OverlapArea(groundCheck1.position, groundCheck2.position, whatIsGround);
+        
+        if (isGrounded)
+        {
+            animator.SetBool("IsJumping", false);
+        }
     }
 
     private void CoyoteTime()
@@ -173,22 +187,22 @@ public class Player : MonoBehaviour
         {
             FindObjectOfType<AudioManager>().Play("Hit");
             currentHealth += value;
-            Debug.Log("Health: " + currentHealth);
+            Debug.Log("Health: " + currentHealth);
         }
-        else // If positive value.
-        {
-            currentHealth += value;
-            Debug.Log("else Health: " + currentHealth);
-            if (currentHealth >= maxHealth)
-            {
-                currentHealth = maxHealth;
-                Debug.Log("Health is at max! " + currentHealth);
+        else // If positive value.
+        {
+            currentHealth += value;
+            Debug.Log("else Health: " + currentHealth);
+            if (currentHealth >= maxHealth)
+            {
+                currentHealth = maxHealth;
+                Debug.Log("Health is at max! " + currentHealth);
             }
-        }
+        }
 
-    }
-
-    // Jesse: Modify the player score variable based on value received from the caller.
+    }
+
+    // Jesse: Modify the player score variable based on value received from the caller.
     public void ModifyScore(int value)
     {
         currentScore += value;
@@ -197,36 +211,46 @@ public class Player : MonoBehaviour
 
     public void BounceBack(Collision2DSideType side)
     {
-        if (side == Collision2DSideType.Top)
+        if (side == Collision2DSideType.Top)
         {
             rb.velocity = Vector2.up * bounceOffVelocity;
-        }
-        /*        else if(side == Collision2DSideType.Left)
-                {
-                    rb.velocity = Vector2.left * bounceOffVelocity;
-                    Debug.Log("Bounce Left");
-                }
-                else if (side == Collision2DSideType.Right)
-                {
-                    rb.velocity = Vector2.right * bounceOffVelocity;
-                    Debug.Log("Bounce Right");
-                }
-                else
-                {
-                    Debug.Log("Whoa, how did it colide there?");
-                }*/
+        }
+        /*        else if(side == Collision2DSideType.Left)
+                {
+                    rb.velocity = Vector2.left * bounceOffVelocity;
+                    Debug.Log("Bounce Left");
+                }
+                else if (side == Collision2DSideType.Right)
+                {
+                    rb.velocity = Vector2.right * bounceOffVelocity;
+                    Debug.Log("Bounce Right");
+                }
+                else
+                {
+                    Debug.Log("Whoa, how did it colide there?");
+                }*/
     }
 
     // check if player is dead. This needs to link to game over script.
-    private void IsAlive()
+    //private void IsAlive()
+    //{
+    //    if (health <= 0)
+    //    {
+    //        isAlive = false;
+    //    } 
+      
+    //}
+
+
+    public void OnLanding()
     {
         if (currentHealth <= 0)
         {
-            isAlive = false;
+            isAlive = false;
             Debug.Log("Game over!");
             GameOver();
-        }
-
+        }
+
     }
 
     // Getters (Java style still works, however C# has additional usage when using it's own format).
@@ -244,26 +268,26 @@ public class Player : MonoBehaviour
     public int GetMaxHealth()
     {
         return maxHealth;
-    }
-
+    }
+
     public void GameOver()
     {
         FindObjectOfType<GameManager>().GameOver();
     }
-}
-
-// This was a previous attempt at grounding using boxcast. I didn't stick with it because I couldn't get it
-// working effectively, and my overlap method felt more robust for handling odd terrain like diagonals.
-// 
-//private bool isGrounded()
-//{
-//    RaycastHit2D box = Physics2D.BoxCast(groundCheck.bounds.center, groundCheck.bounds.size, 0f, Vector2.down, platformLayer, 0, 5f);
-//    Debug.Log(box.collider);
-//    return box.collider != null;
-//}
-
-// REFERENCES
-
+}
+
+// This was a previous attempt at grounding using boxcast. I didn't stick with it because I couldn't get it
+// working effectively, and my overlap method felt more robust for handling odd terrain like diagonals.
+// 
+//private bool isGrounded()
+//{
+//    RaycastHit2D box = Physics2D.BoxCast(groundCheck.bounds.center, groundCheck.bounds.size, 0f, Vector2.down, platformLayer, 0, 5f);
+//    Debug.Log(box.collider);
+//    return box.collider != null;
+//}
+
+// REFERENCES
+
 /*[1] “Unity Tutorial: Preserving Data between Scene Loading/Switching...”. [Online].
 Available: https://www.youtube.com/watch?v=WchH-JCwVI8.
-[Accessed: 30-Jun.-2020].*/
+[Accessed: 30-Jun.-2020].*/
