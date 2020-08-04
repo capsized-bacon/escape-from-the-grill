@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     public Transform groundCheck1, groundCheck2;
     // Variable for animation here:
     public Animator animator;
-    
+
     // Health and living state check
     private int maxHealth;
     public int currentHealth;
@@ -70,10 +70,9 @@ public class Player : MonoBehaviour
         jumpVelocity = 21f;
         hangTime = .2f;
         jumpBufferLength = .01f;
-
-        animator = GetComponent<Animator>();
-   
         bounceOffVelocity = 8f;
+
+        animator = GetComponent<Animator>();        
     }
 
     private void Update()
@@ -82,10 +81,9 @@ public class Player : MonoBehaviour
         IsGrounded();
         FlipSprite();
         Move();
-        Jump();
-
-        animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+        Jump();        
         IsAlive();
+        animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
     }
 
     // This makes the sprite turn left and right when the player moves left and right. In hindsight, I should have
@@ -145,7 +143,7 @@ public class Player : MonoBehaviour
     private void IsGrounded()
     {
         isGrounded = Physics2D.OverlapArea(groundCheck1.position, groundCheck2.position, whatIsGround);
-        
+
         if (isGrounded)
         {
             animator.SetBool("IsJumping", false);
@@ -187,19 +185,18 @@ public class Player : MonoBehaviour
         {
             FindObjectOfType<AudioManager>().Play("Hit");
             currentHealth += value;
-            Debug.Log("Health: " + currentHealth);
+            Debug.Log("Health: " + currentHealth);
         }
-        else // If positive value.
-        {
-            currentHealth += value;
-            Debug.Log("else Health: " + currentHealth);
-            if (currentHealth >= maxHealth)
-            {
-                currentHealth = maxHealth;
+        else // If positive value.
+        {
+            currentHealth += value;
+            Debug.Log("else Health: " + currentHealth);
+            if (currentHealth >= maxHealth)
+            {
+                currentHealth = maxHealth;
                 Debug.Log("Health is at max! " + currentHealth);
             }
-        }
-
+        }
     }
 
     // Jesse: Modify the player score variable based on value received from the caller.
@@ -215,42 +212,32 @@ public class Player : MonoBehaviour
         {
             rb.velocity = Vector2.up * bounceOffVelocity;
         }
-        /*        else if(side == Collision2DSideType.Left)
-                {
-                    rb.velocity = Vector2.left * bounceOffVelocity;
-                    Debug.Log("Bounce Left");
-                }
-                else if (side == Collision2DSideType.Right)
-                {
-                    rb.velocity = Vector2.right * bounceOffVelocity;
-                    Debug.Log("Bounce Right");
-                }
-                else
-                {
-                    Debug.Log("Whoa, how did it colide there?");
-                }*/
+        /*        else if(side == Collision2DSideType.Left)
+                {
+                    rb.velocity = Vector2.left * bounceOffVelocity;
+                    Debug.Log("Bounce Left");
+                }
+                else if (side == Collision2DSideType.Right)
+                {
+                    rb.velocity = Vector2.right * bounceOffVelocity;
+                    Debug.Log("Bounce Right");
+                }
+                else
+                {
+                    Debug.Log("Whoa, how did it colide there?");
+                }*/
     }
 
     // check if player is dead. This needs to link to game over script.
-    //private void IsAlive()
-    //{
-    //    if (health <= 0)
-    //    {
-    //        isAlive = false;
-    //    } 
-      
-    //}
-
-
-    public void OnLanding()
+    private void IsAlive()
     {
         if (currentHealth <= 0)
         {
-            isAlive = false;
+            isAlive = false;
             Debug.Log("Game over!");
             GameOver();
-        }
-
+        }
+
     }
 
     // Getters (Java style still works, however C# has additional usage when using it's own format).
@@ -276,16 +263,17 @@ public class Player : MonoBehaviour
     }
 }
 
-// This was a previous attempt at grounding using boxcast. I didn't stick with it because I couldn't get it
-// working effectively, and my overlap method felt more robust for handling odd terrain like diagonals.
-// 
-//private bool isGrounded()
-//{
-//    RaycastHit2D box = Physics2D.BoxCast(groundCheck.bounds.center, groundCheck.bounds.size, 0f, Vector2.down, platformLayer, 0, 5f);
-//    Debug.Log(box.collider);
-//    return box.collider != null;
-//}
-
+// This was a previous attempt at grounding using boxcast. I didn't stick with it because I couldn't get it
+// working effectively, and my overlap method felt more robust for handling odd terrain like diagonals.// 
+//private bool isGrounded()
+//{
+//    RaycastHit2D box = Physics2D.BoxCast(groundCheck.bounds.center, groundCheck.bounds.size, 0f, Vector2.down, platformLayer, 0, 5f);
+//    Debug.Log(box.collider);
+//    return box.collider != null;
+//}
+
+
+
 // REFERENCES
 
 /*[1] “Unity Tutorial: Preserving Data between Scene Loading/Switching...”. [Online].
