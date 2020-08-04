@@ -10,12 +10,12 @@ public class Player : MonoBehaviour
     // These points are chosen in Unity and called when checking player is grounded.
     public Transform groundCheck1, groundCheck2;
     // Variable for animation here:
-    public Animator anim;
+    public Animator animator;
     
     // Health and living state check
     public int health;
     private int maxHealth;
-    private bool isAlive;
+    // private bool isAlive;
 
     // Variables related to movement
     private bool isGrounded;
@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         // Initialising the boolean check for being alive, to be used for game over trigger.
-        isAlive = true;
+        // isAlive = true;
         // Setting default health to 100, subject to change.
         maxHealth = 100;
         health = maxHealth;
@@ -43,6 +43,9 @@ public class Player : MonoBehaviour
         jumpVelocity = 20f;
         hangTime = .2f;
         jumpBufferLength = .01f;
+
+        animator = GetComponent<Animator>();
+   
     }
 
     private void Update()
@@ -52,7 +55,8 @@ public class Player : MonoBehaviour
         FlipSprite();
         Move();
         Jump();
-        Animate();
+
+        animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
         //IsAlive();
     }
 
@@ -93,6 +97,7 @@ public class Player : MonoBehaviour
 
         if (jumpBufferCount >= 0 && hangCounter > 0 && isGrounded)
         {
+            animator.SetBool("IsJumping", true);
             rb.velocity = Vector2.up * jumpVelocity;
             jumpBufferCount = 0;
         }
@@ -101,6 +106,7 @@ public class Player : MonoBehaviour
         // allow more control on jump height.
         if (Input.GetKeyUp(KeyCode.Space) && rb.velocity.y > 0)
         {
+            animator.SetBool("IsJumping", true);
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * .5f);
         }
     }
@@ -110,6 +116,11 @@ public class Player : MonoBehaviour
     private void IsGrounded()
     {
         isGrounded = Physics2D.OverlapArea(groundCheck1.position, groundCheck2.position, whatIsGround);
+        
+        if (isGrounded)
+        {
+            animator.SetBool("IsJumping", false);
+        }
     }
 
     private void CoyoteTime()
@@ -141,32 +152,19 @@ public class Player : MonoBehaviour
     }
 
     // check if player is dead. This needs to link to game over script.
-    private void IsAlive()
-    {
-        if (health <= 0)
-        {
-            isAlive = false;
-        } 
+    //private void IsAlive()
+    //{
+    //    if (health <= 0)
+    //    {
+    //        isAlive = false;
+    //    } 
       
-    }
+    //}
 
-    private void Animate()
+
+    public void OnLanding()
     {
-   
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
-        {
-            anim.SetTrigger("Run");
-        } 
-
-        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
-        {
-            anim.SetTrigger("Idle");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            anim.SetTrigger("Jump");
-        }
+ 
     }
 
     // This was a previous attempt at grounding using boxcast. I didn't stick with it because I couldn't get it
