@@ -40,7 +40,11 @@ public class Player : MonoBehaviour
     public float jumpBufferLength;
     private float jumpBufferCount;
     public float bounceOffVelocity;
-    public int jumpCount;
+    private float reserveJumpVelocity;
+    public float jumpMultiplier;
+    private float reserveSpeed;
+    public float speedMultiplier;
+    public int powerUpLength = 20;
 
     private void Start()
     {
@@ -128,7 +132,6 @@ public class Player : MonoBehaviour
             rb.velocity = Vector2.up * jumpVelocity;
             jumpBufferCount = 0;
             FindObjectOfType<AudioManager>().Play("Jump");
-            jumpCount = 1;
         }
 
         // If the space bar is let go early in the jump, the velocity of the jump will lessen to 
@@ -137,7 +140,6 @@ public class Player : MonoBehaviour
         {
             animator.SetBool("IsJumping", true);
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * .5f);
-            jumpCount = 1;
         }
     }
 
@@ -150,7 +152,6 @@ public class Player : MonoBehaviour
         if (isGrounded)
         {
             animator.SetBool("IsJumping", false);
-            jumpCount = 0;
         }
     }
 
@@ -269,21 +270,39 @@ public class Player : MonoBehaviour
     //Detects when player collides with power up object
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PowerUp")
+        if (collision.tag == "SuperJump")
         {
             Destroy(collision.gameObject);
+            reserveJumpVelocity = jumpVelocity;
+            jumpMultiplier = 1.3f;
+            jumpVelocity = jumpVelocity * jumpMultiplier;
+            GetComponent<SpriteRenderer>().color = Color.blue;
+            StartCoroutine(ResetJump());
+        }
+        if (collision.tag == "SuperSpeed")
+        {
+            Destroy(collision.gameObject);
+            reserveSpeed = speed;
+            speedMultiplier = 2f;
+            speed = speed * speedMultiplier;
             GetComponent<SpriteRenderer>().color = Color.red;
-            GetComponent<DoStuff>().speed = 0.5f;
-            StartCoroutine(ResetPower());
+            StartCoroutine(ResetSpeed());
         }
     }
 
     //Resets the player back to normal after power up ends
-    private IEnumerator ResetPower()
+    private IEnumerator ResetJump()
     {
-        yield return new WaitForSeconds(10);
-        GetComponent<DoStuff>().speed = 1.5f;
+        yield return new WaitForSeconds(powerUpLength);
         GetComponent<SpriteRenderer>().color = Color.white;
+        jumpVelocity = reserveJumpVelocity;
+    }
+    //Creates a time for the powerup and resets the player back to normal speed after the timer expires
+    private IEnumerator ResetSpeed()
+    {
+        yield return new WaitForSeconds(powerUpLength);
+        GetComponent<SpriteRenderer>().color = Color.white;
+        speed = reserveSpeed;
     }
 
 }
