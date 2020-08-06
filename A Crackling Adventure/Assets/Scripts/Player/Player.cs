@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     public int currentScore = 0;
 
     // Jesse: Adding Player instance.
-   static Player instance; // [1]
+    static Player instance; // [1]
 
     public static Player GetInstance()
     {
@@ -44,7 +44,13 @@ public class Player : MonoBehaviour
     public float jumpMultiplier;
     private float reserveSpeed;
     public float speedMultiplier;
-    public int powerUpLength = 20;
+    public int powerUpLength = 10;
+    private bool isInvincible;
+    private bool isSuperSpeed;
+    private bool isSuperJump;
+    private int speedCount = 0;
+    private int jumpCount = 0;
+    private int invincibilityCount = 0;
 
     private void Start()
     {
@@ -188,9 +194,16 @@ public class Player : MonoBehaviour
     {
         if (value < 0) // If negative value.
         {
-            FindObjectOfType<AudioManager>().Play("Hit");
-            currentHealth += value;
-            Debug.Log("Health: " + currentHealth);
+            if(isInvincible == false)
+            {
+                FindObjectOfType<AudioManager>().Play("Hit");
+                currentHealth += value;
+                Debug.Log("Health: " + currentHealth);
+            }
+            else if(isInvincible == true)
+            {
+                Debug.Log("Health: " + currentHealth);
+            }
         }
         else // If positive value.
         {
@@ -270,42 +283,146 @@ public class Player : MonoBehaviour
     //Detects when player collides with power up object
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //Destroys the power up object and initiates the super jump power up
         if (collision.tag == "SuperJump")
         {
-            Destroy(collision.gameObject);
-            reserveJumpVelocity = jumpVelocity;
-            jumpMultiplier = 1.3f;
-            jumpVelocity = jumpVelocity * jumpMultiplier;
-            GetComponent<SpriteRenderer>().color = Color.blue;
-            StartCoroutine(ResetJump());
+            //Nested if prevents power ups stacking
+            if (isSuperJump == false)
+            {
+                Destroy(collision.gameObject);
+                reserveJumpVelocity = jumpVelocity;
+                jumpMultiplier = 1.3f;
+                jumpVelocity = jumpVelocity * jumpMultiplier;
+                isSuperJump = true;
+                playerColour();
+                jumpCount = jumpCount + 1;
+                StartCoroutine(ResetJump());
+            }
+            else if(isSuperJump == true)
+            {
+                Destroy(collision.gameObject);
+                playerColour();
+                jumpCount = jumpCount + 1;
+                StartCoroutine(ResetJump());
+            }
+            
         }
+        //Destroys the power up object and initiates the super speed power up
         if (collision.tag == "SuperSpeed")
         {
+            //Nested if prevents power ups stacking
+            if(isSuperSpeed == false)
+            {
+                Destroy(collision.gameObject);
+                reserveSpeed = speed;
+                speedMultiplier = 2f;
+                speed = speed * speedMultiplier;
+                isSuperSpeed = true;
+                playerColour();
+                speedCount = speedCount + 1;
+                StartCoroutine(ResetSpeed());
+            }
+            else if(isSuperSpeed == true)
+            {
+                Destroy(collision.gameObject);
+                playerColour();
+                speedCount = speedCount + 1;
+                StartCoroutine(ResetSpeed());
+            }
+        }
+        //Destroys the power up object and initiates the invincibility power up
+        if (collision.tag == "Invincibility")
+        {
             Destroy(collision.gameObject);
-            reserveSpeed = speed;
-            speedMultiplier = 2f;
-            speed = speed * speedMultiplier;
-            GetComponent<SpriteRenderer>().color = Color.red;
-            StartCoroutine(ResetSpeed());
+            isInvincible = true;
+            playerColour();
+            invincibilityCount = invincibilityCount + 1;
+            StartCoroutine(ResetInvincible());
         }
     }
 
-    //Resets the player back to normal after power up ends
+    //Creates a time for the powerup and resets the player back to normal jump velocity after the timer expires
     private IEnumerator ResetJump()
     {
         yield return new WaitForSeconds(powerUpLength);
-        GetComponent<SpriteRenderer>().color = Color.white;
+        jumpCount = jumpCount - 1;
+        //The while loop enables the player to grab multiple of the same power up and have their timers stack
+        while (speedCount > 0)
+        {
+            yield return new WaitForSeconds(powerUpLength);
+            jumpCount = jumpCount - 1;
+        }
         jumpVelocity = reserveJumpVelocity;
+        isSuperJump = false;
+        playerColour();
     }
     //Creates a time for the powerup and resets the player back to normal speed after the timer expires
     private IEnumerator ResetSpeed()
     {
         yield return new WaitForSeconds(powerUpLength);
-        GetComponent<SpriteRenderer>().color = Color.white;
+        speedCount = speedCount - 1;
+        //The while loop enables the player to grab multiple of the same power up and have their timers stack
+        while (speedCount > 0)
+        {
+            yield return new WaitForSeconds(powerUpLength);
+            speedCount = speedCount - 1;
+        }
         speed = reserveSpeed;
+        isSuperSpeed = false;
+        playerColour();
     }
 
-}
+    //Creates a time for the powerup and resets the player back to normal after the timer expires
+    private IEnumerator ResetInvincible()
+    {
+        yield return new WaitForSeconds(powerUpLength);
+        //The while loop enables the player to grab multiple of the same power up and have their timers stack
+        invincibilityCount = invincibilityCount - 1;
+        while(invincibilityCount > 0)
+        {
+            yield return new WaitForSeconds(powerUpLength);
+            invincibilityCount = invincibilityCount - 1;
+        }
+        isInvincible = false;
+        playerColour();
+    }
+
+    //Changes the players colour depending on what combination of pwer ups are active
+    private void playerColour()
+    {
+        if (isSuperJump == true && isSuperSpeed == false && isInvincible == false)
+        {
+            GetComponent<SpriteRenderer>().color = Color.blue;
+        }
+        else if (isSuperJump == false && isSuperSpeed == true && isInvincible == false)
+        {
+            GetComponent<SpriteRenderer>().color = Color.red;
+        }
+        else if (isSuperJump == false && isSuperSpeed == false && isInvincible == true)
+        {
+            GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
+        else if (isSuperJump == true && isSuperSpeed == true && isInvincible == false)
+        {
+            GetComponent<SpriteRenderer>().color = new Color(0.65f, 0f, 1f);//Purple
+        }
+        else if (isSuperJump == true && isSuperSpeed == false && isInvincible == true)
+        {
+            GetComponent<SpriteRenderer>().color = Color.green;
+        }
+        else if (isSuperJump == false && isSuperSpeed == true && isInvincible == true)
+        {
+            GetComponent<SpriteRenderer>().color = new Color(1f, 0.55f, 0f);//Orange
+        }
+        else if (isSuperJump == true && isSuperSpeed == true && isInvincible == true)
+        {
+            GetComponent<SpriteRenderer>().color = Color.black;
+        }
+        else if (isSuperJump == false && isSuperSpeed == false && isInvincible == false)
+        {
+            GetComponent<SpriteRenderer>().color = Color.white;
+        }
+    }}
 
 // This was a previous attempt at grounding using boxcast. I didn't stick with it because I couldn't get it
 // working effectively, and my overlap method felt more robust for handling odd terrain like diagonals.// 
