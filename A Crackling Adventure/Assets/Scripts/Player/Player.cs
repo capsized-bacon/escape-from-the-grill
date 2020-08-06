@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     public int currentScore = 0;
 
     // Jesse: Adding Player instance.
-    static Player instance; // [1]
+   static Player instance; // [1]
 
     public static Player GetInstance()
     {
