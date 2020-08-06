@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
     public float jumpBufferLength;
     private float jumpBufferCount;
     public float bounceOffVelocity;
+    public int jumpCount;
 
     private void Start()
     {
@@ -72,7 +73,7 @@ public class Player : MonoBehaviour
         jumpBufferLength = .01f;
         bounceOffVelocity = 8f;
 
-        animator = GetComponent<Animator>();        
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -81,7 +82,7 @@ public class Player : MonoBehaviour
         IsGrounded();
         FlipSprite();
         Move();
-        Jump();        
+        Jump();
         IsAlive();
         animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
     }
@@ -127,6 +128,7 @@ public class Player : MonoBehaviour
             rb.velocity = Vector2.up * jumpVelocity;
             jumpBufferCount = 0;
             FindObjectOfType<AudioManager>().Play("Jump");
+            jumpCount = 1;
         }
 
         // If the space bar is let go early in the jump, the velocity of the jump will lessen to 
@@ -135,6 +137,7 @@ public class Player : MonoBehaviour
         {
             animator.SetBool("IsJumping", true);
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * .5f);
+            jumpCount = 1;
         }
     }
 
@@ -147,6 +150,7 @@ public class Player : MonoBehaviour
         if (isGrounded)
         {
             animator.SetBool("IsJumping", false);
+            jumpCount = 0;
         }
     }
 
@@ -261,6 +265,27 @@ public class Player : MonoBehaviour
     {
         FindObjectOfType<GameManager>().GameOver();
     }
+
+    //Detects when player collides with power up object
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "PowerUp")
+        {
+            Destroy(collision.gameObject);
+            GetComponent<SpriteRenderer>().color = Color.red;
+            GetComponent<DoStuff>().speed = 0.5f;
+            StartCoroutine(ResetPower());
+        }
+    }
+
+    //Resets the player back to normal after power up ends
+    private IEnumerator ResetPower()
+    {
+        yield return new WaitForSeconds(10);
+        GetComponent<DoStuff>().speed = 1.5f;
+        GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
 }
 
 // This was a previous attempt at grounding using boxcast. I didn't stick with it because I couldn't get it

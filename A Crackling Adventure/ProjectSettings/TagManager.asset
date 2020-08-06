@@ -6,6 +6,7 @@ TagManager:
   tags:
   - boundaries
   - turn
+  - PowerUp
   layers:
   - Default
   - TransparentFX
