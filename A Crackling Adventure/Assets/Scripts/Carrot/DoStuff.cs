@@ -34,9 +34,9 @@ public class DoStuff : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        IsGrounded();
+        //IsGrounded();
         Move();
-        Jump();
+        //Jump();
         IsAlive();
     }
 
@@ -93,17 +93,21 @@ public class DoStuff : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("boundaries"))
         {
-            Vector3 currRot = spriteTransform.eulerAngles;
-            if (moveRight)
-            {
-                moveRight = false;
-            }
-            else
-            {
-                moveRight = true;
-            }
-            currRot.y += 180;
+            Turn();
         }
+    }
+    private void Turn()
+    {
+        Vector3 currRot = spriteTransform.eulerAngles;
+        if (moveRight)
+        {
+            moveRight = false;
+        }
+        else
+        {
+            moveRight = true;
+        }
+        currRot.y += 180;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
