@@ -121,9 +121,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
-<<<<<<< HEAD
---- !u!1 &341451303
-=======
 --- !u!4 &11695270 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1953527775695946799, guid: b87f4a5b0f3e4c54d8fe1d37bd743ff7,
@@ -443,11 +440,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 341451303}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-<<<<<<< HEAD
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-=======
   m_LocalPosition: {x: 204.51, y: 9.4, z: 0}
->>>>>>> Second-Level
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1974,13 +1967,9 @@ Transform:
   - {fileID: 2038008615}
   - {fileID: 1222342404}
   - {fileID: 759245524}
->>>>>>> Second-Level
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
---- !u!1 &1585070828
-=======
 --- !u!1001 &477610615
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12385,32 +12374,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1402057640}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1661120895}
-  - component: {fileID: 1661120894}
-  m_Layer: 0
-  m_Name: Grid
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!156049354 &1661120894
-Grid:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1661120893}
-  m_Enabled: 1
-  m_CellSize: {x: 1, y: 1, z: 0}
-  m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 0
-  m_CellSwizzle: 0
---- !u!4 &1661120895
-=======
 --- !u!4 &1458552638 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8867275058854110988, guid: c4d7651a84ea99a40a2f3edc0b9a498d,
@@ -13495,12 +13458,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-<<<<<<< HEAD
-  - {fileID: 1585070829}
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
   - {fileID: 1251041057}
   - {fileID: 1270301116}
   - {fileID: 314366483}
@@ -14315,4 +14272,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 097d09db42b4466448df17f0d61344f7, type: 3}
->>>>>>> Second-Level
