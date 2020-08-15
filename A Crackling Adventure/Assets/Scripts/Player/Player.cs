@@ -263,7 +263,7 @@ public class Player : MonoBehaviour
         if (currentHealth <= 0)
         {
             isAlive = false;
-            Debug.Log("Game over!");
+            // Debug.Log("Game over!");
             GameOver();
         }
 
@@ -285,8 +285,6 @@ public class Player : MonoBehaviour
     {
         return maxHealth;
     }
-
-
 
     public void GameOver()
     {
