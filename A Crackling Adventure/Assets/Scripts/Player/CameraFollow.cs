@@ -6,6 +6,11 @@ public class CameraFollow : MonoBehaviour
     public float smoothSpeed = 0.125f;
     public Vector3 offset;
 
+    // Doesn't work.
+    /*public void Stert() {
+        GameObject.DontDestroyOnLoad(this.gameObject);
+    }*/
+
     private void FixedUpdate()
     {
         Vector3 desiredPosition = target.position + offset;
