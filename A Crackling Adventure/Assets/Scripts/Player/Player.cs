@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -57,14 +58,15 @@ public class Player : MonoBehaviour
     private void Start()
     {
         // Jesse: Singleton pattern. He shall never die! https://wiki.unity3d.com/index.php/Singleton
-        if (instance != null)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
+        //if (instance != null)
+        //{
+        //    Destroy(this.gameObject);
+        //    return;
+        //}
 
-        instance = this;
-        GameObject.DontDestroyOnLoad(this.gameObject);
+        isAlive = true;
+        //instance = this;
+        //GameObject.DontDestroyOnLoad(this.gameObject);
 
         // Initialising the boolean check for being alive, to be used for game over trigger.
         // isAlive = true;
@@ -97,6 +99,18 @@ public class Player : MonoBehaviour
         Jump();
         IsAlive();
         animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+
+        TestRestart();
+    }
+
+    private void TestRestart()
+    {
+        // Testing the code needed to restart the level, and seeing what happens
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
     // This makes the sprite turn left and right when the player moves left and right. In hindsight, I should have
@@ -288,7 +302,8 @@ public class Player : MonoBehaviour
 
     public void GameOver()
     {
-        FindObjectOfType<GameManager>().GameOver();
+        //FindObjectOfType<GameManager>().GameOver();
+        SceneManager.LoadScene("Game Over");
     }
 
     //Detects when player collides with power up object
