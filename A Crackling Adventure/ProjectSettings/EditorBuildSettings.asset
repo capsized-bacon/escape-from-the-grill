@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/Options.unity
     guid: 873be59448e3eed4d8b4304886b6125a
   - enabled: 1
-    path: Assets/Scenes/Kitchen Level 1.unity
-    guid: 8a0193ed6429ae64c87cc01a4cb3e3cc
+    path: Assets/Scenes/Level1.unity
+    guid: 049f8c70184fdb44a96d916068a8af6a
   - enabled: 1
     path: Assets/Game Over.unity
     guid: b92fa944f36354048a7eaa58b30acf16
