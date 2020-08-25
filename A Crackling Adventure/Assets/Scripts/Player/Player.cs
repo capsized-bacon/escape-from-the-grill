@@ -297,6 +297,7 @@ public class Player : MonoBehaviour
         //Destroys the power up object and initiates the super jump power up
         if (collision.tag == "SuperJump")
         {
+            FindObjectOfType<AudioManager>().Play("Ta");
             //Nested if prevents power ups stacking
             if (isSuperJump == false)
             {
@@ -321,6 +322,7 @@ public class Player : MonoBehaviour
         //Destroys the power up object and initiates the super speed power up
         if (collision.tag == "SuperSpeed")
         {
+            FindObjectOfType<AudioManager>().Play("Ta");
             //Nested if prevents power ups stacking
             if (isSuperSpeed == false)
             {
@@ -344,6 +346,7 @@ public class Player : MonoBehaviour
         //Destroys the power up object and initiates the invincibility power up
         if (collision.tag == "Invincibility")
         {
+            FindObjectOfType<AudioManager>().Play("Ta");
             Destroy(collision.gameObject);
             isInvincible = true;
             playerColour();
